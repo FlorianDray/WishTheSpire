@@ -1,4 +1,4 @@
-package fr.dawan.WishTheSpire;
+package fr.dawan.wish_the_spire;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
