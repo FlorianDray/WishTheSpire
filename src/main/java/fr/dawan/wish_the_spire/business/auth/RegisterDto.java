@@ -1,6 +1,5 @@
-package fr.dawan.wish_the_spire.business.user;
+package fr.dawan.wish_the_spire.business.auth;
 
-import fr.dawan.wish_the_spire.business.generic.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto extends BaseDto {
+public class RegisterDto {
+
     private String username;
     private String email;
+    private String password;
+    private String confirmPassword;
 }
