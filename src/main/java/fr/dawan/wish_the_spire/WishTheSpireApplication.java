@@ -9,5 +9,10 @@ public class WishTheSpireApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WishTheSpireApplication.class, args);
 		System.out.println("test buildd");
+		System.out.println("test buildd");
+		System.out.println("test buildd");
+		System.out.println("test buildd");
+		System.out.println("test buildd");
+		System.out.println("test buildd");
 	}
 }
