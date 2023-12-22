@@ -41,7 +41,7 @@ pipeline {
                         bat "docker stop wishthespire"
                         bat "docker rm wishthespire"
                     } catch (Exception e) {
-                       echo '404 Not Found : WishTheSpire'
+                       echo '404 Not Found : wishthespire'
                     }
                     bat "docker run --name wishthespire -d -p 9075:8080 wishthespire:latest WishTheSpire.jar"
                 }
