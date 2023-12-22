@@ -10,4 +10,5 @@ public class WishTheSpireApplication {
 		SpringApplication.run(WishTheSpireApplication.class, args);
 		System.out.println("test buildd");
 	}
+	//test
 }
