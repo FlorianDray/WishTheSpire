@@ -28,7 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build('WishTheSpire:latest')
+                    dockerImage = docker.build('wishthespire:latest')
                     bat "docker image prune -f"
                }
             }
@@ -38,12 +38,12 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat "docker stop WishTheSpire"
-                        bat "docker rm WishTheSpire"
+                        bat "docker stop wishthespire"
+                        bat "docker rm wishthespire"
                     } catch (Exception e) {
-                       echo '404 Not Found : WishTheSpire'
+                       echo '404 Not Found : wishthespire'
                     }
-                    bat "docker run --name WishTheSpire -d -p 9075:8080 WishTheSpire:latest WishTheSpire.jar"
+                    bat "docker run --name wishthespire -d -p 9075:8080 wishthespire:latest WishTheSpire.jar"
                 }
             }
         }
