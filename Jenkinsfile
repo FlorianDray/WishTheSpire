@@ -38,8 +38,8 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat "docker stop WishTheSpire"
-                        bat "docker rm WishTheSpire"
+                        bat "docker stop wishthespire"
+                        bat "docker rm wishthespire"
                     } catch (Exception e) {
                        echo '404 Not Found : WishTheSpire'
                     }
