@@ -43,7 +43,7 @@ pipeline {
                     } catch (Exception e) {
                        echo '404 Not Found : WishTheSpire'
                     }
-                    bat "docker run --name WishTheSpire -d -p 9075:8080 wishthespire:latest WishTheSpire.jar"
+                    bat "docker run --name wishthespire -d -p 9075:8080 wishthespire:latest WishTheSpire.jar"
                 }
             }
         }
