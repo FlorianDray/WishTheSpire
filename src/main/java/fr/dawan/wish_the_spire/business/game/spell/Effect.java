@@ -20,7 +20,19 @@ public class Effect extends Entity {
 
     void gainDexterite(int dext, Entity caster) { caster.setDexterite(caster.getDexterite() + dext);}
 
-    void attack(int dmg, Entity caster, Entity target) { target.setPv(target.getPv() - (caster.getForce() + dmg));}
+    void attack(int dmg, Entity caster, Entity target) {
+        if (target.getArmure() > 0) {
+            dmg =  (caster.getForce() + dmg) - target.getArmure();
+           if (dmg > 0) {
+               target.setPv(target.getPv() - (caster.getForce() + dmg));
+               target.setArmure(0);
+           } else {
+               target.setArmure(target.getArmure() -  (caster.getForce() + dmg));
+           }
+        } else {
+            target.setPv(target.getPv() - (caster.getForce() + dmg));
+        }
+    }
 
     void addArmor(int armor, Entity caster) { caster.setArmure(caster.getArmure() + armor + caster.getDexterite() );}
 
