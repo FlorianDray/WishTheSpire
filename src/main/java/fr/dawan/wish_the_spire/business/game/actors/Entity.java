@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Scanner;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +19,27 @@ public class Entity {
     private int mana; // mana du joueur
     private List<Spell> spellList; // liste des spells possédé du joueur
 
-    void tourDeCombat(Entity enemy) {
-        while ( mana < 0) {
+    public void tourDeCombat(Entity enemy) {
+        while ( mana > 0) {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("choisissez votre spell");
+            int recupSaisie = scanner.nextInt();
+
+            try {
+                if ((mana - spellList.get(recupSaisie).getManaCost()) >= 0 ) {
+
+                        spellList.get(recupSaisie).activate(this, enemy);
+                        mana -= spellList.get(recupSaisie).getManaCost();
+                        System.out.println("mana restant : " + mana);
+
+                }else {
+                    System.out.println("cout en mana trop elevé");
+                }
+            } catch (Exception e) {
+                System.out.println("saisie invalide");
+            }
+
 
         }
     }

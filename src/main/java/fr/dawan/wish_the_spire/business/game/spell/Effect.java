@@ -1,7 +1,13 @@
 package fr.dawan.wish_the_spire.business.game.spell;
 
 import fr.dawan.wish_the_spire.business.game.actors.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Effect extends Entity {
     private TypeEffect type;
 
@@ -21,16 +27,17 @@ public class Effect extends Entity {
     void gainDexterite(int dext, Entity caster) { caster.setDexterite(caster.getDexterite() + dext);}
 
     void attack(int dmg, Entity caster, Entity target) {
+        dmg =  (caster.getForce() + dmg);
+
         if (target.getArmure() > 0) {
-            dmg =  (caster.getForce() + dmg) - target.getArmure();
-           if (dmg > 0) {
-               target.setPv(target.getPv() - (caster.getForce() + dmg));
+           if (dmg > target.getArmure()) {
+               target.setPv(target.getPv() - (dmg - target.getArmure()));
                target.setArmure(0);
            } else {
-               target.setArmure(target.getArmure() -  (caster.getForce() + dmg));
+               target.setArmure(target.getArmure() -  (dmg));
            }
         } else {
-            target.setPv(target.getPv() - (caster.getForce() + dmg));
+            target.setPv(target.getPv() - (dmg));
         }
     }
 

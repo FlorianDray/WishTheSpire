@@ -15,7 +15,8 @@ public class Spell {
     private String description; // description du spell
     private List<Effect> effects; // liste des effets a appliquer
 
-    void activate(Entity caster, Entity target) { // activation du spell
+    public void activate(Entity caster, Entity target) { // activation du spell
+
         effects.forEach((effet) -> effet.activateEffect(caster, target));
     }
 }
