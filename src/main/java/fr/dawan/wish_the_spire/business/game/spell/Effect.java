@@ -43,6 +43,8 @@ public class Effect extends Entity {
 
     void addArmor(int armor, Entity caster) { caster.setArmure(caster.getArmure() + armor + caster.getDexterite() );}
 
+    void stun(int nbTurn, Entity target){};
+
 
     void activateEffect(Entity caster, Entity target) {
         switch (type) {
@@ -52,6 +54,7 @@ public class Effect extends Entity {
             case DEXTERITE -> gainDexterite(value, caster);
             case DAMAGE -> attack(value, caster, target);
             case ARMOR -> addArmor(value, caster);
+            case STUN -> stun(value,target);
         }
     }
 }
