@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -24,9 +25,15 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private String roles;
 
+    public User(String name, String password, String email) {
+        this.username = name;
+        this.password = password;
+        this.email = email;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(roles.split(",")).map(SimpleGrantedAuthority::new).toList();
+        return Arrays.stream(Objects.toString(roles, "PUBLIC").split(",")).map(SimpleGrantedAuthority::new).toList();
     }
 
     @Override
