@@ -17,6 +17,8 @@ public class WishTheSpireApplication {
 		//SpringApplication.run(WishTheSpireApplication.class, args);
 
 		List<Spell> spellListPlayer = new ArrayList<Spell>();
+		List<Spell> spellMainPlayer = new ArrayList<Spell>();
+		List<Spell> spellDefaussePlayer = new ArrayList<Spell>();
 
 		List<Effect> effects = new ArrayList<>();
 		effects.add(new Effect(TypeEffect.DAMAGE, 3));
@@ -41,8 +43,8 @@ public class WishTheSpireApplication {
 		spellListPlayer.add(gainForce);
 
 
-		Entity player = new Entity(10,0,2,2,3,spellListPlayer);
-		Entity enemy = new Entity(10,1,2,2,3,spellListPlayer);
+		Entity player = new Entity(10,0,2,2,3,5,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
+		Entity enemy = new Entity(10,1,2,2,3,5,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
 
 		player.tourDeCombat(enemy);
 
