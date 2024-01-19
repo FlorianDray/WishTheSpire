@@ -27,12 +27,18 @@ public class WishTheSpireApplication {
 		Spell volDeVie = new Spell(2, "vol la vie de l enemie",effects);
 
 		spellListPlayer.add(volDeVie);
+		spellListPlayer.add(volDeVie);
+		spellListPlayer.add(volDeVie);
 
 		effects = new ArrayList<>();
 		effects.add(new Effect(TypeEffect.DAMAGE, 1));
 
 		Spell baseAttack = new Spell(1, "attaque de base",effects);
 
+		spellListPlayer.add(baseAttack);
+		spellListPlayer.add(baseAttack);
+		spellListPlayer.add(baseAttack);
+		spellListPlayer.add(baseAttack);
 		spellListPlayer.add(baseAttack);
 
 		effects = new ArrayList<>();
@@ -43,8 +49,8 @@ public class WishTheSpireApplication {
 		spellListPlayer.add(gainForce);
 
 
-		Entity player = new Entity(10,0,2,2,3,5,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
-		Entity enemy = new Entity(10,1,2,2,3,5,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
+		Entity player = new Entity(10,0,2,2,3,3,5,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
+		Entity enemy = new Entity(10,1,2,2,1,1,5,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
 
 		player.tourDeCombat(enemy);
 

@@ -18,7 +18,8 @@ public class Entity {
     private int dexterite; // point de dexterite s ajoutant a l armure
     private int armure; // point d armure
     private int mana; // mana du joueur
-    private int nbPiocheCarte; // mana du joueur
+    private int manaMax; // mana maximum du joueur
+    private int nbPiocheCarte; // nb de carte que le joueur pioche par tour
     private List<Spell> main; //  spell dans la main du joueur
     private List<Spell> deck; // liste des spells possédé du joueur
     private List<Spell> defausse; // liste de la defausse du joueur
@@ -33,17 +34,12 @@ public class Entity {
                 melangeDefausse();
             }
 
-
             if (deck.size() > 0) {
                 index = random.nextInt(0,deck.size());
                 main.add(deck.get(index));
                 deck.remove(index);
             }
-
-
         }
-
-
     }
 
     // methode qui melange la defausse dans la pioche
@@ -53,28 +49,53 @@ public class Entity {
         System.out.println("melange de la defausse dans la pioche");
     }
 
+    // methode qui rajoute toute la main a la defausse
+    private void allMainToDefausse() {
+        defausse.addAll(main);
+        main.clear();
+    }
+
     public void tourDeCombat(Entity enemy) {
-        draw(); // pioche initial
 
-        while ( mana > 0) {
-            afficheMain();
-            int recupSaisie = getRecupSaisie(); // recupere la saisie du joueur
+        while (enemy.getPv() > 0) { //tant que l enemie n est pas mort
 
-            try {
-                if ((mana - main.get(recupSaisie).getManaCost()) >= 0 ) {
 
-                    activateSelectedSpell(enemy, recupSaisie); // activation du spell
+            draw(); // pioche initial
 
+            while (mana > 0 && enemy.getPv() > 0) { // tant que le joueur a du mana et que le mob est pas mort
+                afficheMain();
+                int recupSaisie = getRecupSaisie(); // recupere la saisie du joueur
+
+                if (recupSaisie != 9) { //si saisie == 9 alors le joueur passe son tour
+                    try {
+                        if ((mana - main.get(recupSaisie).getManaCost()) >= 0) {
+
+                            activateSelectedSpell(enemy, recupSaisie); // activation du spell
+
+                        } else {
+                            System.out.println("");
+                            System.out.println("cout en mana trop elevé");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("saisie invalide");
+                    }
                 }else {
-                    System.out.println("");
-                    System.out.println("cout en mana trop elevé");
+                    mana = 0;
                 }
-            } catch (Exception e) {
-                System.out.println("saisie invalide");
             }
-
-
+            displayFinDeTour(enemy);
         }
+    }
+
+//methode d affichage du fin de tour et reinitialisation du mana
+    private void displayFinDeTour(Entity enemy) {
+        System.out.println("");
+        System.out.println("------ fin du tour --------");
+        System.out.println("point de vie du joueur : " + pv);
+        System.out.println("point de vie de l'enemie : " + enemy.getPv());
+        System.out.println("");
+        allMainToDefausse();
+        mana = manaMax;
     }
 
     //methode d activation du spell selectionné
@@ -114,5 +135,6 @@ public class Entity {
     //methode qui affiche les cartes dans la main du joueur
     public void afficheMain() {
         main.forEach(s -> System.out.println("- " + s.getDescription()));
+        System.out.printf("\n nb carte deck = %d | nb carte defausse = %d \n",deck.size(),defausse.size());
     }
 }
