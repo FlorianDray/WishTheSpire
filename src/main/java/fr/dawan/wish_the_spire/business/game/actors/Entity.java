@@ -13,16 +13,16 @@ import java.util.Scanner;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Entity {
-    private int pv; // point de vie du joueur
-    private int force; // point de force s ajoutant au degat
-    private int dexterite; // point de dexterite s ajoutant a l armure
-    private int armure; // point d armure
-    private int mana; // mana du joueur
-    private int manaMax; // mana maximum du joueur
-    private int nbPiocheCarte; // nb de carte que le joueur pioche par tour
-    private List<Spell> main; //  spell dans la main du joueur
-    private List<Spell> deck; // liste des spells possédé du joueur
-    private List<Spell> defausse; // liste de la defausse du joueur
+    protected int pv; // point de vie du joueur
+    protected int force; // point de force s ajoutant au degat
+    protected int dexterite; // point de dexterite s ajoutant a l armure
+    protected int armure; // point d armure
+    protected int mana; // mana du joueur
+    protected int manaMax; // mana maximum du joueur
+    protected int nbPiocheCarte; // nb de carte que le joueur pioche par tour
+    protected List<Spell> main; //  spell dans la main du joueur
+    protected List<Spell> deck; // liste des spells possédé du joueur
+    protected List<Spell> defausse; // liste de la defausse du joueur
 
     //methode pour piocher une main au debut de chaque tour
     public void draw(){
@@ -55,7 +55,7 @@ public class Entity {
         main.clear();
     }
 
-    public void tourDeCombat(Entity enemy) {
+    public void tourDeCombat(EntityEnemy enemy) {
 
         while (enemy.getPv() > 0) { //tant que l enemie n est pas mort
 
@@ -82,13 +82,18 @@ public class Entity {
                 }else {
                     mana = 0;
                 }
+
             }
             displayFinDeTour(enemy);
+            if (enemy.getPv() > 0){
+                enemy.tourDeCombat(this);
+                displayFinDeTour(enemy);
+            }
         }
     }
 
 //methode d affichage du fin de tour et reinitialisation du mana
-    private void displayFinDeTour(Entity enemy) {
+    protected void displayFinDeTour(Entity enemy) {
         System.out.println("");
         System.out.println("------ fin du tour --------");
         System.out.println("point de vie du joueur : " + pv);
@@ -99,7 +104,7 @@ public class Entity {
     }
 
     //methode d activation du spell selectionné
-    private void activateSelectedSpell(Entity enemy, int recupSaisie) {
+    protected void activateSelectedSpell(Entity enemy, int recupSaisie) {
         main.get(recupSaisie).activate(this, enemy);
 
         substractMana(recupSaisie); // soustrait le cout en mana et affiche le reste
@@ -116,13 +121,13 @@ public class Entity {
     }
 
     // methode d ajout d un spell en main a la defausse
-    private void mainToDefausse(int recupSaisie) {
+    protected void mainToDefausse(int recupSaisie) {
         defausse.add(main.get(recupSaisie));
         main.remove(recupSaisie);
     }
 
     //methode de recuperation de la saisie utilisateur (INT)
-    private static int getRecupSaisie() {
+    protected static int getRecupSaisie() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("");
