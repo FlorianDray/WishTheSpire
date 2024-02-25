@@ -55,11 +55,15 @@ public class Entity {
         main.clear();
     }
 
+
     public void tourDeCombat(EntityEnemy enemy) {
 
         while (enemy.getPv() > 0) { //tant que l enemie n est pas mort
 
 
+            if (armure != 0){
+                armure = 0;
+            }
             draw(); // pioche initial
 
             while (mana > 0 && enemy.getPv() > 0) { // tant que le joueur a du mana et que le mob est pas mort
@@ -96,7 +100,7 @@ public class Entity {
     protected void displayFinDeTour(Entity enemy) {
         System.out.println("");
         System.out.println("------ fin du tour --------");
-        System.out.println("point de vie du joueur : " + pv);
+        System.out.println("point de vie du joueur : " + pv + " point d'armure : " + armure);
         System.out.println("point de vie de l'enemie : " + enemy.getPv());
         System.out.println("");
         allMainToDefausse();
@@ -104,7 +108,9 @@ public class Entity {
     }
 
     //methode d activation du spell selectionné
-    protected void activateSelectedSpell(Entity enemy, int recupSaisie) {
+
+
+    public void activateSelectedSpell(Entity enemy, int recupSaisie) {
         main.get(recupSaisie).activate(this, enemy);
 
         substractMana(recupSaisie); // soustrait le cout en mana et affiche le reste

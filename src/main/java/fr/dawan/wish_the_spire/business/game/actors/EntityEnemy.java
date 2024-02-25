@@ -1,19 +1,21 @@
 package fr.dawan.wish_the_spire.business.game.actors;
 
 import fr.dawan.wish_the_spire.business.game.spell.Spell;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class EntityEnemy extends Entity{
     public EntityEnemy(int pv, int force, int dexterite, int armure, int mana, int manaMax, int nbPiocheCarte, List<Spell> main, List<Spell> deck, List<Spell> defausse) {
         super(pv, force, dexterite, armure, mana, manaMax, nbPiocheCarte, main, deck, defausse);
     }
 
-    public  void tourDeCombat(Entity player){
+
+    public void tourDeCombat(Entity player){
         draw(); // pioche initial
 
         while (getMain().size() > 0){
@@ -25,7 +27,7 @@ public class EntityEnemy extends Entity{
     }
 
     @Override
-    protected void activateSelectedSpell(Entity player, int recupSaisie){
+    public void activateSelectedSpell(Entity player, int recupSaisie){
         getMain().get(recupSaisie).activate(this, player);
         System.out.println(getMain().get(recupSaisie).getDescription());
 

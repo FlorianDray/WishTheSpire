@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Effect extends Entity {
+public class Effect {
     private TypeEffect type;
 
     private int value;
