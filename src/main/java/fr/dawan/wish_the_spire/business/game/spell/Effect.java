@@ -1,33 +1,35 @@
 package fr.dawan.wish_the_spire.business.game.spell;
 
-import fr.dawan.wish_the_spire.business.game.actors.Entity;
+import fr.dawan.wish_the_spire.business.game.actors.Player;
+import fr.dawan.wish_the_spire.business.generic.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@jakarta.persistence.Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Effect {
+public class Effect extends BaseEntity {
     private TypeEffect type;
 
     private int value;
-    void healing(int heal, Entity caster) {
+    void healing(int heal, Player caster) {
         caster.setPv(caster.getPv() + heal);
     }
 
-    void addMana(int mana, Entity caster) {
+    void addMana(int mana, Player caster) {
         caster.setMana(caster.getMana() + mana);
     }
 
-    void gainForce(int force, Entity caster) {
-        caster.setForce(caster.getForce() + force);
+    void gainForce(int force, Player caster) {
+        caster.setForcef(caster.getForcef() + force);
     }
 
-    void gainDexterite(int dext, Entity caster) { caster.setDexterite(caster.getDexterite() + dext);}
+    void gainDexterite(int dext, Player caster) { caster.setDexterite(caster.getDexterite() + dext);}
 
-    void attack(int dmg, Entity caster, Entity target) {
-        dmg =  (caster.getForce() + dmg);
+    void attack(int dmg, Player caster, Player target) {
+        dmg =  (caster.getForcef() + dmg);
 
         if (target.getArmure() > 0) {
            if (dmg > target.getArmure()) {
@@ -41,12 +43,12 @@ public class Effect {
         }
     }
 
-    void addArmor(int armor, Entity caster) { caster.setArmure(caster.getArmure() + armor + caster.getDexterite() );}
+    void addArmor(int armor, Player caster) { caster.setArmure(caster.getArmure() + armor + caster.getDexterite() );}
 
-    void stun(int nbTurn, Entity target){};
+    void stun(int nbTurn, Player target){};
 
 
-    void activateEffect(Entity caster, Entity target) {
+    void activateEffect(Player caster, Player target) {
         switch (type) {
             case HEAL -> healing(value, caster);
             case FORCE -> gainForce(value, caster);

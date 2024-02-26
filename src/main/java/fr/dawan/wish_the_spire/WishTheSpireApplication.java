@@ -1,22 +1,17 @@
 package fr.dawan.wish_the_spire;
 
-import fr.dawan.wish_the_spire.business.game.actors.Entity;
-import fr.dawan.wish_the_spire.business.game.map.GameMode;
-import fr.dawan.wish_the_spire.business.game.spell.Effect;
-import fr.dawan.wish_the_spire.business.game.spell.Spell;
-import fr.dawan.wish_the_spire.business.game.spell.TypeEffect;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 @SpringBootApplication
 public class WishTheSpireApplication {
 
-	public static void main(String[] args) {
-		//SpringApplication.run(WishTheSpireApplication.class, args);
+	public static void main(String[] args) throws IOException {
+		SpringApplication.run(WishTheSpireApplication.class, args);
 
-		List<Spell> spellListPlayer = new ArrayList<Spell>();
+		/*List<Spell> spellListPlayer = new ArrayList<Spell>();
 		List<Spell> spellMainPlayer = new ArrayList<Spell>();
 		List<Spell> spellDefaussePlayer = new ArrayList<Spell>();
 
@@ -30,7 +25,7 @@ public class WishTheSpireApplication {
 		/*spellListPlayer.add(volDeVie);
 		spellListPlayer.add(volDeVie);*/
 
-		effects = new ArrayList<>();
+		/*effects = new ArrayList<>();
 		effects.add(new Effect(TypeEffect.DAMAGE, 1));
 
 		Spell baseAttack = new Spell(1, "attaque de base",effects);
@@ -64,11 +59,8 @@ public class WishTheSpireApplication {
 
 		System.out.println("point de vie du joueur : " + player.getPv());
 		System.out.println("point de vie de l'enemie : " + enemy.getPv());*/
-		GameMode gameMode = new GameMode();
-		gameMode.displayMap();
-
-		gameMode.niveauSuivant();
-		gameMode.levelActif(player);
+		/*GameMode gameMode = new GameMode();
+		gameMode.launchGame(player);*/
 
 	}
 	//test

@@ -1,16 +1,18 @@
 package fr.dawan.wish_the_spire.business.game.map;
 
-import fr.dawan.wish_the_spire.business.game.actors.Entity;
-import fr.dawan.wish_the_spire.business.game.actors.EntityEnemy;
+import fr.dawan.wish_the_spire.business.game.actors.Player;
+import fr.dawan.wish_the_spire.business.game.actors.PlayerEnemy;
 import fr.dawan.wish_the_spire.business.game.spell.Effect;
 import fr.dawan.wish_the_spire.business.game.spell.Spell;
 import fr.dawan.wish_the_spire.business.game.spell.TypeEffect;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 
 @Getter
 @Setter
@@ -18,12 +20,27 @@ public class GameMode {
     private List<TypeEtage> niveau = new ArrayList<TypeEtage>();
     private int etageActuelle;
     private TypeEtage typeEtageActuelle;
+    private int difficulty;
+
 
     public GameMode() {
         etageActuelle = 0;
+        difficulty = 0;
         niveau.add(TypeEtage.SPAWN);
         genereNiveau();
         typeEtageActuelle = TypeEtage.SPAWN;
+    }
+
+    public void launchGame(Player player) throws IOException {
+
+        displayMap();
+
+        do {
+            niveauSuivant();
+            levelActif(player);
+
+        }while (playerIsAlive(player));
+
     }
 
     private void genereNiveau() {
@@ -78,14 +95,14 @@ public class GameMode {
     public void niveauSuivant(){
 
         if (etageActuelle == niveau.size() - 1){
-
-        }else{
-            etageActuelle++;
+            niveau.clear();
+            genereNiveau();
+            difficulty++;
         }
-
+        etageActuelle++;
     }
 
-    public void levelActif(Entity player){
+    public void levelActif(Player player) throws IOException {
         switch (niveau.get(etageActuelle)){
             case COMBAT -> combatStage(player);
             case EVENEMENT -> eventStage();
@@ -100,11 +117,14 @@ public class GameMode {
     private void marchandStage() {
     }
 
-    private void eventStage() {
+    private void eventStage() throws IOException {
+        System.out.println("vous entrez dans un evenement (appuyer sur une touche pour continuer)");
+        System.in.read();
     }
 
-    private void combatStage(Entity player) {
-        System.out.println("vous entrez dans la piece et vous tombez nez à nez avec un enemie ");
+    private void combatStage(Player player) throws IOException {
+        System.out.println("vous entrez dans la piece et vous tombez nez à nez avec un enemie (appuyer sur une touche pour continuer)");
+        System.in.read();
         List<Spell> spellListPlayer = new ArrayList<Spell>();
         List<Spell> spellMainPlayer = new ArrayList<Spell>();
         List<Spell> spellDefaussePlayer = new ArrayList<Spell>();
@@ -127,8 +147,14 @@ public class GameMode {
         spellListPlayer.add(baseAttack);
         spellListPlayer.add(baseAttack);
 
-        EntityEnemy enemy = new EntityEnemy(10,0,2,0,1,1,1,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
+        PlayerEnemy enemy = new PlayerEnemy(10,0,2,0,1,1,1,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
 
         player.tourDeCombat(enemy);
     }
+
+    private boolean playerIsAlive(Player player){
+        return player.getPv() > 0;
+    }
+
+
 }

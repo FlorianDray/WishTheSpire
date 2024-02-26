@@ -1,27 +1,32 @@
 package fr.dawan.wish_the_spire.business.game.actors;
 
 import fr.dawan.wish_the_spire.business.game.spell.Spell;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import fr.dawan.wish_the_spire.business.generic.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+import lombok.*;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-@Data
+@Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entity {
+public class Player extends BaseEntity {
     protected int pv; // point de vie du joueur
-    protected int force; // point de force s ajoutant au degat
+    protected int forcef; // point de force s ajoutant au degat
     protected int dexterite; // point de dexterite s ajoutant a l armure
     protected int armure; // point d armure
     protected int mana; // mana du joueur
     protected int manaMax; // mana maximum du joueur
     protected int nbPiocheCarte; // nb de carte que le joueur pioche par tour
+   @Transient
     protected List<Spell> main; //  spell dans la main du joueur
     protected List<Spell> deck; // liste des spells possédé du joueur
+    @Transient
     protected List<Spell> defausse; // liste de la defausse du joueur
 
     //methode pour piocher une main au debut de chaque tour
@@ -56,9 +61,9 @@ public class Entity {
     }
 
 
-    public void tourDeCombat(EntityEnemy enemy) {
+    public void tourDeCombat(PlayerEnemy enemy) {
 
-        while (enemy.getPv() > 0) { //tant que l enemie n est pas mort
+        while (enemy.getPv() > 0 || pv < 1) { //tant que l enemie ou lr joueur  n est pas mort
 
 
             if (armure != 0){
@@ -97,7 +102,7 @@ public class Entity {
     }
 
 //methode d affichage du fin de tour et reinitialisation du mana
-    protected void displayFinDeTour(Entity enemy) {
+    protected void displayFinDeTour(Player enemy) {
         System.out.println("");
         System.out.println("------ fin du tour --------");
         System.out.println("point de vie du joueur : " + pv + " point d'armure : " + armure);
@@ -110,7 +115,7 @@ public class Entity {
     //methode d activation du spell selectionné
 
 
-    public void activateSelectedSpell(Entity enemy, int recupSaisie) {
+    public void activateSelectedSpell(Player enemy, int recupSaisie) {
         main.get(recupSaisie).activate(this, enemy);
 
         substractMana(recupSaisie); // soustrait le cout en mana et affiche le reste
@@ -147,5 +152,7 @@ public class Entity {
     public void afficheMain() {
         main.forEach(s -> System.out.println("- " + s.getDescription()));
         System.out.printf("\n nb carte deck = %d | nb carte defausse = %d \n",deck.size(),defausse.size());
+        System.out.printf("armure actuelle : %d  | force actuelle : %d \n",armure, forcef
+        );
     }
 }
