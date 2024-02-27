@@ -9,7 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto extends BaseDto {
-    private long id;
-    private int version;
-    private String name;
+    private String username;
 }

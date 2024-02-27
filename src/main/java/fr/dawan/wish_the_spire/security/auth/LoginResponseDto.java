@@ -1,4 +1,4 @@
-package fr.dawan.wish_the_spire.business.auth;
+package fr.dawan.wish_the_spire.security.auth;
 
 import fr.dawan.wish_the_spire.business.user.UserDto;
 import lombok.AllArgsConstructor;

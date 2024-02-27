@@ -1,4 +1,4 @@
-package fr.dawan.wish_the_spire.business.auth;
+package fr.dawan.wish_the_spire.security.auth;
 
 public interface AuthService {
 
