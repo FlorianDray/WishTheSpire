@@ -2,9 +2,9 @@ package fr.dawan.wish_the_spire;
 
 import fr.dawan.wish_the_spire.business.game.actors.Player;
 import fr.dawan.wish_the_spire.business.game.map.GameMode;
-import fr.dawan.wish_the_spire.business.game.spell.Effect;
+import fr.dawan.wish_the_spire.business.game.effect.Effect;
 import fr.dawan.wish_the_spire.business.game.spell.Spell;
-import fr.dawan.wish_the_spire.business.game.spell.TypeEffect;
+import fr.dawan.wish_the_spire.business.game.effect.TypeEffect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

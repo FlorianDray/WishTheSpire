@@ -1,12 +1,14 @@
-package fr.dawan.wish_the_spire.business.game.spell;
+package fr.dawan.wish_the_spire.business.game.effect;
 
 import fr.dawan.wish_the_spire.business.game.actors.Player;
 import fr.dawan.wish_the_spire.business.generic.BaseEntity;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@jakarta.persistence.Entity
+
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,7 +50,7 @@ public class Effect extends BaseEntity {
     void stun(int nbTurn, Player target){};
 
 
-    void activateEffect(Player caster, Player target) {
+    public void activateEffect(Player caster, Player target) {
         switch (type) {
             case HEAL -> healing(value, caster);
             case FORCE -> gainForce(value, caster);
