@@ -2,10 +2,10 @@ package fr.dawan.wish_the_spire.business.game.actors;
 
 import fr.dawan.wish_the_spire.business.game.spell.Spell;
 import fr.dawan.wish_the_spire.business.generic.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -16,18 +16,21 @@ import java.util.Scanner;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Player extends BaseEntity {
-    protected int pv; // point de vie du joueur
-    protected int forcef; // point de force s ajoutant au degat
-    protected int dexterite; // point de dexterite s ajoutant a l armure
-    protected int armure; // point d armure
-    protected int mana; // mana du joueur
-    protected int manaMax; // mana maximum du joueur
-    protected int nbPiocheCarte; // nb de carte que le joueur pioche par tour
+    private int pv; // point de vie du joueur
+    private int forcef; // point de force s ajoutant au degat
+    private int dexterite; // point de dexterite s ajoutant a l armure
+    private int armure; // point d armure
+    private int mana; // mana du joueur
+    private int manaMax; // mana maximum du joueur
+    private int nbPiocheCarte; // nb de carte que le joueur pioche par tour
    @Transient
-    protected List<Spell> main; //  spell dans la main du joueur
-    protected List<Spell> deck; // liste des spells possédé du joueur
+   private List<Spell> main = new ArrayList<Spell>();
+   @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)//  spell dans la main du joueur
+   private List<Spell> deck; // liste des spells possédé du joueur
     @Transient
-    protected List<Spell> defausse; // liste de la defausse du joueur
+    private List<Spell> defausse = new ArrayList<Spell>(); // liste de la defausse du joueur
+    @Transient
+    private boolean isEnemy = true; // liste de la defausse du joueur
 
     //methode pour piocher une main au debut de chaque tour
     public void draw(){
@@ -61,43 +64,53 @@ public class Player extends BaseEntity {
     }
 
 
-    public void tourDeCombat(PlayerEnemy enemy) {
+    public void tourDeCombat(Player enemy) {
 
-        while (enemy.getPv() > 0 || pv < 1) { //tant que l enemie ou lr joueur  n est pas mort
+        if (!isEnemy){
+            while (enemy.getPv() > 0 && pv > 0) { //tant que l enemie ou lr joueur  n est pas mort
 
 
-            if (armure != 0){
-                armure = 0;
+                if (armure != 0) {
+                    armure = 0;
+                }
+                draw(); // pioche initial
+
+                while (mana > 0 && enemy.getPv() > 0) { // tant que le joueur a du mana et que le mob est pas mort
+                    afficheMain();
+                    int recupSaisie = getRecupSaisie(); // recupere la saisie du joueur
+
+                    if (recupSaisie != 9) { //si saisie == 9 alors le joueur passe son tour
+                        try {
+                            if ((mana - main.get(recupSaisie).getManaCost()) >= 0) {
+
+                                activateSelectedSpell(enemy, recupSaisie); // activation du spell
+
+                            } else {
+                                System.out.println("");
+                                System.out.println("cout en mana trop elevé");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("saisie invalide");
+                        }
+                    } else {
+                        mana = 0;
+                    }
+
+                }
+                displayFinDeTour(enemy);
+                if (enemy.getPv() > 0) {
+                    enemy.tourDeCombat(this);
+                    displayFinDeTour(enemy);
+                }
             }
+        }else{
             draw(); // pioche initial
 
-            while (mana > 0 && enemy.getPv() > 0) { // tant que le joueur a du mana et que le mob est pas mort
-                afficheMain();
-                int recupSaisie = getRecupSaisie(); // recupere la saisie du joueur
-
-                if (recupSaisie != 9) { //si saisie == 9 alors le joueur passe son tour
-                    try {
-                        if ((mana - main.get(recupSaisie).getManaCost()) >= 0) {
-
-                            activateSelectedSpell(enemy, recupSaisie); // activation du spell
-
-                        } else {
-                            System.out.println("");
-                            System.out.println("cout en mana trop elevé");
-                        }
-                    } catch (Exception e) {
-                        System.out.println("saisie invalide");
-                    }
-                }else {
-                    mana = 0;
-                }
-
+            while (getMain().size() > 0){
+                this.activateSelectedSpell(enemy, 0); // enemy est le player
             }
-            displayFinDeTour(enemy);
-            if (enemy.getPv() > 0){
-                enemy.tourDeCombat(this);
-                displayFinDeTour(enemy);
-            }
+            System.out.println("pv du joueur : " + enemy.getPv() + "\n");
+            System.out.println("pv de l enemie : " + this.getPv() + "\n");
         }
     }
 
@@ -116,11 +129,18 @@ public class Player extends BaseEntity {
 
 
     public void activateSelectedSpell(Player enemy, int recupSaisie) {
-        main.get(recupSaisie).activate(this, enemy);
+        if (!isEnemy){
+            main.get(recupSaisie).activate(this, enemy);
 
-        substractMana(recupSaisie); // soustrait le cout en mana et affiche le reste
+            substractMana(recupSaisie); // soustrait le cout en mana et affiche le reste
 
-        mainToDefausse(recupSaisie); //ajout du spell de la main a la defausse
+            mainToDefausse(recupSaisie);
+        }else {
+            getMain().get(recupSaisie).activate(this, enemy);
+            System.out.println(getMain().get(recupSaisie).getDescription());
+
+            mainToDefausse(recupSaisie);
+        }
     }
 
     //methode qui soustrait le mana en fonction du spell choisie et affiche le mana restant

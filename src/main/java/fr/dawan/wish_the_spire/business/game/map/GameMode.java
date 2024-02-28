@@ -1,7 +1,6 @@
 package fr.dawan.wish_the_spire.business.game.map;
 
 import fr.dawan.wish_the_spire.business.game.actors.Player;
-import fr.dawan.wish_the_spire.business.game.actors.PlayerEnemy;
 import fr.dawan.wish_the_spire.business.game.effect.Effect;
 import fr.dawan.wish_the_spire.business.game.spell.Spell;
 import fr.dawan.wish_the_spire.business.game.effect.TypeEffect;
@@ -21,14 +20,16 @@ public class GameMode {
     private int etageActuelle;
     private TypeEtage typeEtageActuelle;
     private int difficulty;
+    private List<Player> listEnemy;
 
 
-    public GameMode() {
+    public GameMode(List<Player> recup) {
         etageActuelle = 0;
         difficulty = 0;
         niveau.add(TypeEtage.SPAWN);
         genereNiveau();
         typeEtageActuelle = TypeEtage.SPAWN;
+        listEnemy = recup;
     }
 
     public void launchGame(Player player) throws IOException {
@@ -125,30 +126,8 @@ public class GameMode {
     private void combatStage(Player player) throws IOException {
         System.out.println("vous entrez dans la piece et vous tombez nez à nez avec un enemie (appuyer sur une touche pour continuer)");
         System.in.read();
-        List<Spell> spellListPlayer = new ArrayList<Spell>();
-        List<Spell> spellMainPlayer = new ArrayList<Spell>();
-        List<Spell> spellDefaussePlayer = new ArrayList<Spell>();
 
-        List<Effect> effects = new ArrayList<>();
-        effects.add(new Effect(TypeEffect.DAMAGE, 3));
-        effects.add(new Effect(TypeEffect.HEAL, 2));
-
-        Spell volDeVie = new Spell(2, "vol la vie de l enemie",effects);
-
-        spellListPlayer.add(volDeVie);
-        spellListPlayer.add(volDeVie);
-        spellListPlayer.add(volDeVie);
-
-        effects = new ArrayList<>();
-        effects.add(new Effect(TypeEffect.DAMAGE, 1));
-
-        Spell baseAttack = new Spell(1, "attaque de base",effects);
-
-        spellListPlayer.add(baseAttack);
-        spellListPlayer.add(baseAttack);
-
-        PlayerEnemy enemy = new PlayerEnemy(10,0,2,0,1,1,1,spellMainPlayer ,spellListPlayer,spellDefaussePlayer);
-
+        Player enemy = listEnemy.get(0);
         player.tourDeCombat(enemy);
     }
 
