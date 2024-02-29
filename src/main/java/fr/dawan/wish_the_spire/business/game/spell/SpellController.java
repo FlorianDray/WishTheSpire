@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("spells")
+@RequestMapping("api/spells")
 public class SpellController extends GenericController<SpellDto,SpellService> {
     public SpellController(SpellService service) {
         super(service);
