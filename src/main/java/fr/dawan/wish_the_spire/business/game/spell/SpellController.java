@@ -1,14 +1,13 @@
-package fr.dawan.wish_the_spire.business.user;
+package fr.dawan.wish_the_spire.business.game.spell;
 
 import fr.dawan.wish_the_spire.business.generic.GenericController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/users")
-public class UserController extends GenericController<UserDto, UserService> {
-
-    public UserController(UserService service) {
+@RequestMapping("api/spells")
+public class SpellController extends GenericController<SpellDto,SpellService> {
+    public SpellController(SpellService service) {
         super(service);
     }
 }
