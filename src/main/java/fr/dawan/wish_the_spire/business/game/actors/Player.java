@@ -23,14 +23,35 @@ public class Player extends BaseEntity {
     private int mana; // mana du joueur
     private int manaMax; // mana maximum du joueur
     private int nbPiocheCarte; // nb de carte que le joueur pioche par tour
+    @Transient
+    private int statAffaibli;
+    @Transient
+    private int statBlessure;
+    @Transient
+    private int statPoison;
    @Transient
    private List<Spell> main = new ArrayList<Spell>();
-   @ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)//  spell dans la main du joueur
+   @ManyToMany(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)//  spell dans la main du joueur
    private List<Spell> deck; // liste des spells possédé du joueur
     @Transient
     private List<Spell> defausse = new ArrayList<Spell>(); // liste de la defausse du joueur
     @Transient
     private boolean isEnemy = true; // liste de la defausse du joueur
+
+    public Player(int pv) {
+        this.pv = pv;
+        this.forcef = 0;
+        this.dexterite = 0;
+        this.armure = 0;
+        this.mana = 3;
+        this.manaMax = 3;
+        this.nbPiocheCarte = 5;
+        this.statAffaibli = 0;
+        this.statBlessure = 0;
+        this.statPoison = 0;
+        this.deck = new ArrayList<Spell>();
+        this.isEnemy = false;
+    }
 
     //methode pour piocher une main au debut de chaque tour
     public void draw(){
@@ -97,6 +118,8 @@ public class Player extends BaseEntity {
                     }
 
                 }
+                decreaseStatus();
+                displayStatus();
                 displayFinDeTour(enemy);
                 if (enemy.getPv() > 0) {
                     enemy.tourDeCombat(this);
@@ -109,9 +132,48 @@ public class Player extends BaseEntity {
             while (getMain().size() > 0){
                 this.activateSelectedSpell(enemy, 0); // enemy est le player
             }
+            decreaseStatus();
+            displayStatus();
             System.out.println("pv du joueur : " + enemy.getPv() + "\n");
             System.out.println("pv de l enemie : " + this.getPv() + "\n");
         }
+    }
+
+    private void decreaseStatus(){
+        if (statAffaibli > 0){
+            statAffaibli--;
+        }
+        if (statBlessure > 0){
+            statBlessure--;
+        }
+        if (statPoison > 0){
+            if (!isEnemy){
+                System.out.println("vous subissez "+ statPoison + " de degat de poison");
+            }
+            pv -= statPoison;
+            statPoison--;
+        }
+    }
+
+    private void displayStatus(){
+        String str = "";
+        if (isEnemy){
+            str += "l'enemie est : ";
+        }else {
+            str += "vous etes : ";
+        }
+
+        if (statPoison > 0){
+            str += "empoisonné pendant encore " + statPoison +" tours | ";
+        }
+        if (statBlessure > 0){
+            str += "bléssé pendant encore " + statBlessure +" tours | ";
+        }
+        if (statAffaibli > 0){
+            str += "affaibli pendant encore " + statAffaibli +" tours";
+        }
+
+        System.out.println(str);
     }
 
 //methode d affichage du fin de tour et reinitialisation du mana

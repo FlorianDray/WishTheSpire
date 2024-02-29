@@ -33,6 +33,14 @@ public class Effect extends BaseEntity {
     void attack(int dmg, Player caster, Player target) {
         dmg =  (caster.getForcef() + dmg);
 
+        if (caster.getStatAffaibli() > 0){
+            dmg = dmg - (int) (dmg * 0.4);
+        }
+
+        if (target.getStatBlessure() > 0){
+            dmg = (int) (dmg * 1.5);
+        }
+
         if (target.getArmure() > 0) {
            if (dmg > target.getArmure()) {
                target.setPv(target.getPv() - (dmg - target.getArmure()));
@@ -59,6 +67,21 @@ public class Effect extends BaseEntity {
             case DAMAGE -> attack(value, caster, target);
             case ARMOR -> addArmor(value, caster);
             case STUN -> stun(value,target);
+            case AFFAIBLI -> affaibli(value,target);
+            case POISON -> poison(value,target);
+            case BLESSURE -> blessure(value,target);
         }
+    }
+
+    private void blessure(int value, Player target) {
+        target.setStatBlessure(target.getStatBlessure() + value);
+    }
+
+    private void poison(int value, Player target) {
+        target.setStatPoison(target.getStatPoison() + value);
+    }
+
+    private void affaibli(int value, Player target) {
+        target.setStatAffaibli(target.getStatAffaibli() + value);
     }
 }
