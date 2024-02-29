@@ -20,7 +20,7 @@ import java.util.List;
 public class Spell extends BaseEntity {
     private int manaCost ; // cout en mana du spell
     private String description; // description du spell
-    @ManyToMany(cascade= CascadeType.ALL, fetch= FetchType.EAGER)
+    @ManyToMany(cascade= CascadeType.MERGE, fetch= FetchType.EAGER)
     private List<Effect> effects; // liste des effets a appliquer
 
     public void activate(Player caster, Player target) { // activation du spell
