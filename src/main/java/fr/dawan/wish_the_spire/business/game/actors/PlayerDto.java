@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerDto {
+    private String name, picture_path;
     private int pv; // point de vie du joueur
     private int forcef; // point de force s ajoutant au degat
     private int dexterite; // point de dexterite s ajoutant a l armure

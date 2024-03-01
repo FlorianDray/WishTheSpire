@@ -9,6 +9,7 @@ import java.io.IOException;
 public class WishTheSpireApplication {
 
 	public static void main(String[] args) throws IOException {
+		//
 		SpringApplication.run(WishTheSpireApplication.class, args);
 	}
 }
